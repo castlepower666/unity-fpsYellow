@@ -15,8 +15,16 @@ public class EnemyController : MonoBehaviour
     private int currentPatrolPoint;
     public Transform patrolHolder;
 
+    private bool isDead = false;
+
     public float patrolWaitTime = 3f;
     private float waitCounter;
+
+    public float currentHealth = 25f;
+
+    public float waitToDisappear = 4f;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -29,6 +37,22 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isDead)
+        {
+            waitToDisappear -= Time.deltaTime;
+            if (waitToDisappear <= 0f)
+            {
+                transform.localScale = Vector3.MoveTowards(transform.localScale, Vector3.zero, Time.deltaTime);
+                if (transform.localScale == Vector3.zero)
+                {
+                    Destroy(gameObject);
+                    Destroy(patrolHolder.gameObject);
+                }
+            }
+
+            return;
+        }
+
         float yStore = theRB.linearVelocity.y;
 
         float distance = Vector3.Distance(transform.position, playerCon.transform.position);
@@ -52,7 +76,7 @@ public class EnemyController : MonoBehaviour
         {
             if (patrolPoints.Length > 0)
             {
-                if (Vector3.Distance(transform.position, patrolPoints[currentPatrolPoint].position) < .25f)
+                if (Vector3.Distance(transform.position, new Vector3(patrolPoints[currentPatrolPoint].position.x, transform.position.y, patrolPoints[currentPatrolPoint].position.z)) < .25f)
                 {
 
                     waitCounter -= Time.deltaTime;
@@ -85,6 +109,19 @@ public class EnemyController : MonoBehaviour
         }
 
         theRB.linearVelocity = new Vector3(theRB.linearVelocity.x, yStore, theRB.linearVelocity.z);
-
     }
+
+    public void TakeDamage(float damageToTake)
+    {
+        currentHealth -= damageToTake;
+        if (currentHealth <= 0)
+        {
+            anim.SetTrigger("Dead");
+            isDead = true;
+            theRB.linearVelocity = Vector3.zero;
+            theRB.isKinematic = true;
+            GetComponent<Collider>().enabled = false;
+        }
+    }
+
 }
