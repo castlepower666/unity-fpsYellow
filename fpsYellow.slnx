@@ -30,11 +30,11 @@
   <Project Path="Unity.InferenceEngine.csproj" />
   <Project Path="Unity.Searcher.Editor.csproj" />
   <Project Path="Unity.AI.Generators.Redux.csproj" />
-  <Project Path="Unity.InferenceEngine.Tokenization.csproj" />
   <Project Path="Unity.AI.Sound.csproj" />
+  <Project Path="Unity.InferenceEngine.Tokenization.csproj" />
   <Project Path="UnityEditor.TestRunner.csproj" />
-  <Project Path="Unity.RenderPipelines.Universal.Runtime.csproj" />
   <Project Path="Unity.InferenceEngine.Editor.csproj" />
+  <Project Path="Unity.RenderPipelines.Universal.Runtime.csproj" />
   <Project Path="Unity.UnifiedRayTracing.Runtime.csproj" />
   <Project Path="Unity.AI.Navigation.Editor.ConversionSystem.csproj" />
   <Project Path="Unity.Burst.CodeGen.csproj" />
@@ -65,6 +65,7 @@
   <Project Path="Unity.Collections.CodeGen.csproj" />
   <Project Path="Unity.Mathematics.Editor.csproj" />
   <Project Path="Unity.AI.Toolkit.GenerationContextMenu.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.2D.Common.Runtime.csproj" />
   <Project Path="Unity.AI.Generators.UI.AIDropdownIntegrations.csproj" />
   <Project Path="Unity.AI.Material.Srp.csproj" />
@@ -79,7 +80,6 @@
   <Project Path="Unity.2D.Enhancers.Editor.AIBridge.csproj" />
   <Project Path="Unity.AppUI.Undo.csproj" />
   <Project Path="Unity.AI.Generators.Contexts.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.AI.Generators.Asset.csproj" />
   <Project Path="Unity.AI.Generators.Chat.csproj" />
   <Project Path="Unity.RenderPipeline.Universal.ShaderLibrary.csproj" />

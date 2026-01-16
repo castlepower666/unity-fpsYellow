@@ -6,29 +6,25 @@ public class WeaponsController : MonoBehaviour
 
     public float range;
     public Transform cam;
-
     public LayerMask validLayers;
-
     public GameObject impactEffect;
     public GameObject damageEffect;
     public GameObject muzzleFlare;
-
     public float flareDisplayTime;
     private float flareCounter;
-
     public bool canAutoShoot;
     public float timeBewteenShots;
     private float shotCounter;
-
     public int currentAmmos;
     public int clipSize;
     public int remainingAmmos;
-
     private UIController UICon;
-
     public int pickUpAmount;
+    public float damageAmount;
+    public Weapon[] weapons;
+    private int currentWeaponIndex = 0;
+    private int priorWeaponIndex;
 
-    public float damageAmount = 15f;
 
 
 
@@ -36,6 +32,7 @@ public class WeaponsController : MonoBehaviour
     void Start()
     {
         UICon = FindFirstObjectByType<UIController>();
+        SetWeapon(currentWeaponIndex);
         Reload();
     }
 
@@ -64,7 +61,6 @@ public class WeaponsController : MonoBehaviour
                 if (hit.transform.CompareTag("Enemy"))
                 {
                     Instantiate(damageEffect, hit.point, Quaternion.identity);
-
                     hit.transform.GetComponent<EnemyController>().TakeDamage(damageAmount);
                 }
                 else
@@ -118,5 +114,53 @@ public class WeaponsController : MonoBehaviour
         remainingAmmos += pickUpAmount;
         UICon.UpdateAmmosText(currentAmmos, remainingAmmos);
     }
+
+
+    public void SetWeapon(int weaponIndex)
+    {
+        if (priorWeaponIndex != currentWeaponIndex)
+        {
+            weapons[priorWeaponIndex].remainingAmmos = remainingAmmos;
+            weapons[priorWeaponIndex].currentAmmos = currentAmmos;
+            weapons[priorWeaponIndex].muzzleFlare.SetActive(false);
+        }
+
+
+        range = weapons[weaponIndex].range;
+        muzzleFlare = weapons[weaponIndex].muzzleFlare;
+        flareDisplayTime = weapons[weaponIndex].flareDisplayTime;
+        canAutoShoot = weapons[weaponIndex].canAutoShoot;
+        timeBewteenShots = weapons[weaponIndex].timeBewteenShots;
+        currentAmmos = weapons[weaponIndex].currentAmmos;
+        clipSize = weapons[weaponIndex].clipSize;
+        remainingAmmos = weapons[weaponIndex].remainingAmmos;
+        pickUpAmount = weapons[weaponIndex].pickUpAmount;
+        damageAmount = weapons[weaponIndex].damageAmount;
+
+        foreach (Weapon weapon in weapons)
+        {
+            weapon.gameObject.SetActive(false);
+        }
+
+        weapons[weaponIndex].gameObject.SetActive(true);
+
+        UICon.UpdateAmmosText(currentAmmos, remainingAmmos);
+    }
+
+    public void NextWeapon()
+    {
+        priorWeaponIndex = currentWeaponIndex;
+        currentWeaponIndex = (currentWeaponIndex + 1) % weapons.Length;
+        SetWeapon(currentWeaponIndex);
+    }
+
+    public void PreviousWeapon()
+    {
+        priorWeaponIndex = currentWeaponIndex;
+        currentWeaponIndex = (currentWeaponIndex - 1 + weapons.Length) % weapons.Length;
+        SetWeapon(currentWeaponIndex);
+
+    }
+
 
 }

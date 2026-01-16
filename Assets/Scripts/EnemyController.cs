@@ -59,7 +59,7 @@ public class EnemyController : MonoBehaviour
 
         float distance = Vector3.Distance(transform.position, playerCon.transform.position);
 
-        if (distance < chaseRange)
+        if (distance < chaseRange && !PlayerController.Instance.isDead)
         {
             transform.LookAt(new Vector3(playerCon.transform.position.x, transform.position.y, playerCon.transform.position.z));
 

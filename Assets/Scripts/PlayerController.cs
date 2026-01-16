@@ -3,37 +3,37 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance;
     public CharacterController charCon;
     public float moveSpeed;
-
     public InputActionReference moveAction;
-
     private Vector3 currentMovement;
-
     public InputActionReference lookAction;
     private Vector2 rotStore;
     public float lookSpeed;
-
     public Camera playerCamera;
-
     public float minViewAngel;
     public float maxViewAngel;
-
     public InputActionReference jumpAction;
     public float jumpPower;
     public float gravityModifier = 4f;
-
     public InputActionReference sprintAction;
     public float sprintSpeed;
-
     public float camZoomNormal;
     public float camZoomOut;
     public float camZoomSpeed;
-
     public WeaponsController weaponCon;
     public InputActionReference shootAction;
-
     public InputActionReference reloadAction;
+    public InputActionReference nextWeaponAction;
+    public InputActionReference prevWeaponAction;
+
+    public bool isDead = false;
+
+    void Awake()
+    {
+        Instance = this;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -44,6 +44,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isDead) return;
+
         float yStore = currentMovement.y;
 
         Vector2 moveInput = moveAction.action.ReadValue<Vector2>();
@@ -111,6 +113,15 @@ public class PlayerController : MonoBehaviour
             weaponCon.Reload();
         }
 
+        if (nextWeaponAction.action.WasPressedThisFrame())
+        {
+            weaponCon.NextWeapon();
+        }
+
+        if (prevWeaponAction.action.WasPressedThisFrame())
+        {
+            weaponCon.PreviousWeapon();
+        }
 
     }
 
